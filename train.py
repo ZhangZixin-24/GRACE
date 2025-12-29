@@ -9,7 +9,7 @@ import torch
 import torch_geometric.transforms as T
 import torch.nn.functional as F
 import torch.nn as nn
-from torch_geometric.datasets import Planetoid, CitationFull
+from torch_geometric.datasets import Planetoid, CitationFull, Amazon
 from torch_geometric.utils import dropout_adj
 from torch_geometric.nn import GCNConv
 
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     assert args.gpu_id in range(0, 8)
-    torch.cuda.set_device(args.gpu_id)
+    args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     config = yaml.load(open(args.config), Loader=SafeLoader)[args.dataset]
 
@@ -72,7 +72,11 @@ if __name__ == '__main__':
     weight_decay = config['weight_decay']
 
     def get_dataset(path, name):
-        assert name in ['Cora', 'CiteSeer', 'PubMed', 'DBLP']
+        assert name in ['Cora', 'CiteSeer', 'PubMed', 'DBLP', 'Amazon-computers']
+        
+        if name == 'Amazon-computers':
+            return Amazon(path, 'computers', T.NormalizeFeatures())
+        
         name = 'dblp' if name == 'DBLP' else name
 
         return (CitationFull if name == 'dblp' else Planetoid)(
