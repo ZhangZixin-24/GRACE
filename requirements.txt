@@ -1,9 +1,13 @@
-torch >= 1.4.0
-torch-scatter
-torch-sparse
-torch-cluster
-torch-spline
-torch-geometric >= 1.4.3
-sklearn
-numpy
+# Core
+torch==2.1.0
+torchvision==0.16.0
+torchaudio==2.1.0
+
+# PyG (pure python)
+torch-geometric==2.4.0
+
+# Scientific
+numpy==1.26.4
+scikit-learn
 pyyaml
+tqdm
