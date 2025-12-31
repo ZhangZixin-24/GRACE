@@ -9,7 +9,7 @@ import torch
 import torch_geometric.transforms as T
 import torch.nn.functional as F
 import torch.nn as nn
-from torch_geometric.datasets import Planetoid, CitationFull, Amazon, Actor
+from torch_geometric.datasets import Planetoid, CitationFull, Amazon, Actor, WebKB
 from torch_geometric.utils import dropout_adj
 from torch_geometric.nn import GCNConv
 
@@ -72,7 +72,10 @@ if __name__ == '__main__':
     weight_decay = config['weight_decay']
 
     def get_dataset(path, name):
-        assert name in ['Cora', 'CiteSeer', 'PubMed', 'DBLP', 'Amazon-computers', 'Actor']
+        assert name in ['Cora', 'CiteSeer', 'PubMed', 'DBLP', 'Amazon-computers', 'Actor', 'Texas']
+        
+        if name == 'Texas':
+            return WebKB(path, name, transform=T.NormalizeFeatures())
         
         if name == 'Actor':
             return Actor(path)

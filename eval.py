@@ -1,5 +1,6 @@
 import numpy as np
 import functools
+import torch
 
 from sklearn.metrics import f1_score
 from sklearn.linear_model import LogisticRegression
@@ -47,6 +48,16 @@ def print_statistics(statistics, function_name):
 
 @repeat(3)
 def label_classification(embeddings, y, ratio):
+    labels, counts = torch.unique(y, return_counts=True)
+    valid_labels = labels[counts >= 2]
+
+    mask = torch.zeros_like(y, dtype=torch.bool)
+    for c in valid_labels:
+        mask |= (y == c)
+
+    embeddings = embeddings[mask]
+    y = y[mask]
+    
     X = embeddings.detach().cpu().numpy()
     Y = y.detach().cpu().numpy()
     Y = Y.reshape(-1, 1)
