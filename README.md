@@ -12,7 +12,7 @@ Train and evaluate the model by executing
 ```
 python train.py --dataset Cora
 ```
-The `--dataset` argument should be one of [ Cora, CiteSeer, PubMed, DBLP ].
+The `--dataset` argument should be one of [Cora, CiteSeer, PubMed, DBLP, Amazon-computers, Actor, Texas].
 
 ## Requirements
 
